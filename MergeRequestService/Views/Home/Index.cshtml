@@ -14,7 +14,6 @@
                     Welcome to merge request management service.
                     Click @Html.ActionLink("here", "About", "Home") to see what you can do with this service.
                     Click @Html.ActionLink("here", "Contact", "Home") if you need support.
-
                 </p>
             </div>
         </div>
@@ -42,6 +41,7 @@
         <ul>
             <li>@Html.ActionLink("Preview Merge Request Email", "Index", "MergeRequestMailPreview")</li>
             <li>@Html.ActionLink("Manage Mail Job", "Index", "MailSendingJobs")</li>
+            <li><a href="/hangfire">Job Dashboard</a></li>
         </ul>
     </div>
 </div>

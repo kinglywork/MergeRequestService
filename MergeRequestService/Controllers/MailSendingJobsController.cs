@@ -2,23 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hangfire;
 using MergeRequestService.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MergeRequestService.Models;
+using MergeRequestService.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace MergeRequestService.Controllers
 {
-    [Authorize]//todo admin only
+    [Authorize] //todo admin only
     public class MailSendingJobsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMailSendingJobService _mailSendingJobService;
 
-        public MailSendingJobsController(ApplicationDbContext context)
+        public MailSendingJobsController(ApplicationDbContext context,
+            IMailSendingJobService mailSendingJobService)
         {
             _context = context;
+            _mailSendingJobService = mailSendingJobService;
         }
 
         // GET: MailSendingJobs
@@ -56,14 +61,22 @@ namespace MergeRequestService.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Active,CronExpression")] MailSendingJob mailSendingJob)
+        public async Task<IActionResult> Create([Bind("Id,Name,Active,CronExpression")]
+            MailSendingJob mailSendingJob)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(mailSendingJob);
                 await _context.SaveChangesAsync();
+
+                if (mailSendingJob.Active)
+                {
+                    RecurringJob.AddOrUpdate(mailSendingJob.Name, () => _mailSendingJobService.SendTodayMergeRequestMail(), mailSendingJob.CronExpression);
+                }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(mailSendingJob);
         }
 
@@ -80,6 +93,7 @@ namespace MergeRequestService.Controllers
             {
                 return NotFound();
             }
+
             return View(mailSendingJob);
         }
 
@@ -88,7 +102,8 @@ namespace MergeRequestService.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Active,CronExpression")] MailSendingJob mailSendingJob)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Active,CronExpression")]
+            MailSendingJob mailSendingJob)
         {
             if (id != mailSendingJob.Id)
             {
@@ -101,6 +116,11 @@ namespace MergeRequestService.Controllers
                 {
                     _context.Update(mailSendingJob);
                     await _context.SaveChangesAsync();
+
+                    if (mailSendingJob.Active)
+                    {
+                        RecurringJob.AddOrUpdate(mailSendingJob.Name, () => _mailSendingJobService.SendTodayMergeRequestMail(), mailSendingJob.CronExpression);
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -113,8 +133,10 @@ namespace MergeRequestService.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(mailSendingJob);
         }
 
@@ -142,6 +164,7 @@ namespace MergeRequestService.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var mailSendingJob = await _context.MailSendingJobs.FindAsync(id);
+            RecurringJob.RemoveIfExists(mailSendingJob.Name);
             _context.MailSendingJobs.Remove(mailSendingJob);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
