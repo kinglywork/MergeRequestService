@@ -10,7 +10,7 @@ using Microsoft.Extensions.Options;
 
 namespace MergeRequestService.Controllers
 {
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "ADMIN")]
     public class MergeRequestMailPreviewController : Controller
     {
         private readonly ApplicationDbContext _context;

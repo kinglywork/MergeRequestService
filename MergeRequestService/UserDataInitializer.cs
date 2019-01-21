@@ -12,23 +12,22 @@ namespace MergeRequestService
         private const string NormalRole = "normal";
         private const string DefaultPassword = "Active123!";
         private const string AdminPassword = "ActiveAdmin123!";
-        private const string EmailDomain = "@activenetwork.com";
 
         private static readonly List<string> AdminUsers = new List<string>
         {
-            "admin"
+            "admin@activenetwork.com"
         };
 
         private static readonly List<string> NormalUsers = new List<string>
         {
-            "roy.liu",
-            "jason.yang",
-            "michael.zhang",
-            "tracy.cui",
-            "michael.song",
-            "logan.zhang",
-            "chaln.li",
-            "eason.yi"
+            "roy.liu@activenetwork.com",
+            "jason.yang@activenetwork.com",
+            "michael.zhang@activenetwork.com",
+            "tracy.cui@activenetwork.com",
+            "michael.song@activenetwork.com",
+            "logan.zhang@activenetwork.com",
+            "chaln.li@activenetwork.com",
+            "eason.yi@activenetwork.com"
         };
 
         public static void SeedData(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
@@ -67,7 +66,7 @@ namespace MergeRequestService
 
             var user = new IdentityUser(userName)
             {
-                Email = userName + EmailDomain
+                Email = userName
             };
 
             var userIdentityResult = userManager.CreateAsync(user, password).Result;
