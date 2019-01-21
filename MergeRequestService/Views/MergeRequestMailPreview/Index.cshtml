@@ -1,0 +1,38 @@
+﻿@model MergeRequestService.Models.MergeRequestMail
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<div>
+    <h4>MergeRequestMail Preview @Html.DisplayFor(model => model.TimeStamp)</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Receiver)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Receiver)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Cc)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Cc)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Subject)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Subject)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+        <dd>
+            @Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.Content))
+        </dd>
+    </dl>
+</div>

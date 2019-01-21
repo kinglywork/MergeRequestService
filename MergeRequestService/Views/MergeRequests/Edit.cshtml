@@ -1,0 +1,59 @@
+﻿@model MergeRequestService.Models.MergeRequest
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>MergeRequest</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="SourceBranch" class="control-label"></label>
+                <input asp-for="SourceBranch" class="form-control" />
+                <span asp-validation-for="SourceBranch" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TargetBranch" class="control-label"></label>
+                <input asp-for="TargetBranch" class="form-control" />
+                <span asp-validation-for="TargetBranch" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ChangeSetId" class="control-label"></label>
+                <input asp-for="ChangeSetId" class="form-control" />
+                <span asp-validation-for="ChangeSetId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DevChangeSetId" class="control-label"></label>
+                <input asp-for="DevChangeSetId" class="form-control" />
+                <span asp-validation-for="DevChangeSetId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Reviewer" class="control-label"></label>
+                <input asp-for="Reviewer" class="form-control" />
+                <span asp-validation-for="Reviewer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Memo" class="control-label"></label>
+                <input asp-for="Memo" class="form-control" />
+                <span asp-validation-for="Memo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

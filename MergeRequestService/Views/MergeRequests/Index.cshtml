@@ -1,0 +1,66 @@
+﻿@using System.Globalization
+@model IEnumerable<MergeRequestService.Models.MergeRequest>
+
+@{
+    ViewData["Title"] = "Merge Request List";
+}
+
+<h2>ChangeSets to submit at @DateTime.Now.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SourceBranch)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TargetBranch)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ChangeSetId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DevChangeSetId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Reviewer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Memo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SourceBranch)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TargetBranch)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ChangeSetId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DevChangeSetId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Reviewer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Memo)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

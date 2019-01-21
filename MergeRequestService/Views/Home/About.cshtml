@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "About";
+    ViewData["Message"] = "Merge Request Management Service";
+}
+<h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Message"]</h3>
+
+<p>This is a web site for ECSI team to manage merge requests including a job system to automatically sending merge request mail to NA team.</p>
+<ul>
+    <li>
+        For team member:
+        <div>You can submit merge requests every day, review/update/delete your own merge requests submitted at today @Html.ActionLink("here", "Index", "MergeRequests").</div>
+    </li>
+    <li>
+        For administrator:
+        <div>
+            You can review/create/update/delete all the merge requests @Html.ActionLink("here", "Index", "MergeRequestsAdmin").
+        </div>
+        <div>
+            You can preview today's merge request mail (sending to NA team) @Html.ActionLink("here", "Index", "MergeRequestMailPreview").
+        </div>
+        <div>
+            You can manage merge requests mail sending job @Html.ActionLink("here", "Index", "MailSendingJobs").
+        </div>
+    </li>
+</ul>
