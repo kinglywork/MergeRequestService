@@ -91,9 +91,11 @@ namespace MergeRequestService
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            app.UseHangfireDashboard();
             app.UseHangfireServer();
-            //todo hangfire dashboard is admin only 
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                Authorization = new[] {new HangFireAdminAuthorizationFilter()}
+            });
 
             UserDataInitializer.SeedData(userManager, roleManager);
         }
