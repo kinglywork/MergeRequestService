@@ -44,10 +44,11 @@ namespace MergeRequestService
             services.AddHangfire(config =>
                 config.UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<IdentityUser>() //todo disable register
+            services.AddDefaultIdentity<IdentityUser>()
                 .AddRoles<IdentityRole>()
                 .AddRoleManager<RoleManager<IdentityRole>>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddScoped<IUserClaimsPrincipalFactory<IdentityUser>, UserClaimsPrincipalFactory<IdentityUser, IdentityRole>>();
 
             services.Configure<MailMessageConfig>(Configuration.GetSection(nameof(MailMessageConfig)));
             services.Configure<MailServerConfig>(Configuration.GetSection(nameof(MailServerConfig)));
@@ -55,7 +56,6 @@ namespace MergeRequestService
             services.AddTransient<IMailSendingJobService, MailSendingJobService>();
             services.AddTransient<IMergeRequestMailSender, MergeRequestMailSender>();
             services.AddTransient<IMergeRequestMailGenerator, MergeRequestMailGenerator>();
-            //todo use html template
             services.AddTransient<IMailTemplate, MailHtmlTemplate>();
             services.AddTransient<ITargetBranchListFactory, TargetBranchListFactory>();
 
@@ -93,7 +93,7 @@ namespace MergeRequestService
 
             app.UseHangfireDashboard();
             app.UseHangfireServer();
-            //todo hangfire is admin only 
+            //todo hangfire dashboard is admin only 
 
             UserDataInitializer.SeedData(userManager, roleManager);
         }

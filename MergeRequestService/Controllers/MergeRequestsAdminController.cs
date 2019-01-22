@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace MergeRequestService.Controllers
 {
-    [Authorize]// todo admin only
+    [Authorize(Roles = "admin")]
     public class MergeRequestsAdminController : Controller
     {
         private readonly ApplicationDbContext _context;
