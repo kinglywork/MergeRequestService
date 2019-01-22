@@ -32,9 +32,13 @@ namespace MergeRequestService.Services
         public void SendTodayMergeRequestMail()
         {
             var mergeRequests = _context.MergeRequests.Where(r => r.SubmitAt < Now.AddDays(1).Date && r.SubmitAt >= Now.Date).ToList();
+            if (!mergeRequests.Any())
+            {
+                return;
+            }
+
             var mergeRequestsContent = _mergeRequestMailGenerator.GenerateMergeRequests(mergeRequests);
             var mailBody = _mergeRequestMailGenerator.GenerateMailBody(mergeRequestsContent);
-
 
             var mailSender = new MergeRequestMailSender(_mailServerConfig.Value);
             var mail = new MergeRequestMail
