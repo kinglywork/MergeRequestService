@@ -35,6 +35,7 @@ namespace MergeRequestService.Services
             mail.Ccs.ForEach(cc => mailMessage.CC.Add(cc));
             mailMessage.Body = mail.Content;
             mailMessage.Subject = mail.Subject;
+            mailMessage.IsBodyHtml = true;
             client.Send(mailMessage);
         }
     }
